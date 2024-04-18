@@ -4,32 +4,45 @@ class ListNode:
         self.next = next
 
 def mergeTwoLists(list1: ListNode, list2: ListNode) -> ListNode:
-    # Khởi tạo nút giả (dummy) để bắt đầu
     dummy = ListNode(0)
-    # current là con trỏ hiện tại đang trỏ đến nút cuối cùng của danh sách đã hợp nhất
     current = dummy
     
-    # Duyệt qua cả hai danh sách
     while list1 and list2:
-        # So sánh giá trị của nút hiện tại trong mỗi danh sách
         if list1.val < list2.val:
-            # Nếu giá trị của nút trong list1 nhỏ hơn, thêm nút đó vào danh sách đã hợp nhất
             current.next = list1
-            # Di chuyển con trỏ của list1 sang phần tử tiếp theo
             list1 = list1.next
         else:
-            # Nếu giá trị của nút trong list2 nhỏ hơn hoặc bằng, thêm nút đó vào danh sách đã hợp nhất
             current.next = list2
-            # Di chuyển con trỏ của list2 sang phần tử tiếp theo
             list2 = list2.next
-        # Di chuyển con trỏ của danh sách đã hợp nhất sang phần tử tiếp theo
         current = current.next
     
-    # Khi một trong hai danh sách kết thúc, nối danh sách còn lại vào danh sách đã hợp nhất
-    if list1:
-        current.next = list1
-    else:
-        current.next = list2
+    current.next = list1 if list1 else list2
     
-    # Trả về nút đầu tiên của danh sách đã hợp nhất
     return dummy.next
+
+def parse_input(input_str):
+    nums = list(map(int, input_str.split(',')))
+    head = ListNode(nums[0])
+    current = head
+    for num in nums[1:]:
+        current.next = ListNode(num)
+        current = current.next
+    return head
+
+def print_list(node):
+    res = []
+    while node:
+        res.append(str(node.val))
+        node = node.next
+    print(','.join(res))
+
+if __name__ == "__main__":
+    list1_str = input("Nhập list1: ")
+    list2_str = input("Nhập list2: ")
+
+    list1 = parse_input(list1_str)
+    list2 = parse_input(list2_str)
+
+    merged_list = mergeTwoLists(list1, list2)
+    print("Kết quả sau khi hợp nhất hai danh sách:")
+    print_list(merged_list)
